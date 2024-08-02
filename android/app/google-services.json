@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "492071775404",
+    "project_id": "oy5vazifa10",
+    "storage_bucket": "oy5vazifa10.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:492071775404:android:8e6d1b898398adaa740309",
+        "android_client_info": {
+          "package_name": "com.example.vazifa_10"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBntzRhLZLDVR5y_9wwsCKWOCZ0SFp61oE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
