@@ -21,9 +21,7 @@ void main() async {
       providers: [
         BlocProvider<CardBloc>(
           create: (context) {
-            final userId = '';
             final cardBloc = CardBloc(cardRepository: CardRepository());
-            cardBloc.add(LoadCards(userId));
             return cardBloc;
           },
         ),

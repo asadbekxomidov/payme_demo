@@ -1,10 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:vazifa_10/data/model/card_model.dart';
+import 'package:vazifa_10/blocs/card/card_event.dart';
+import 'package:vazifa_10/blocs/card/card_state.dart';
 import 'package:vazifa_10/data/repositories/card_repository.dart';
-
-part 'card_event.dart';
-part 'card_state.dart';
 
 class CardBloc extends Bloc<CardEvent, CardState> {
   final CardRepository cardRepository;
@@ -14,6 +11,7 @@ class CardBloc extends Bloc<CardEvent, CardState> {
     on<AddCard>(_onAddCard);
     on<UpdateCard>(_onUpdateCard);
     on<DeleteCard>(_onDeleteCard);
+    on<TransferMoney>(_onTransferMoney);
   }
 
   void _onLoadCards(LoadCards event, Emitter<CardState> emit) async {
@@ -28,7 +26,8 @@ class CardBloc extends Bloc<CardEvent, CardState> {
   void _onAddCard(AddCard event, Emitter<CardState> emit) async {
     try {
       await cardRepository.addCard(event.card);
-      add(LoadCards(event.card.userId));
+      final cards = await cardRepository.fetchCards(event.card.userId);
+      emit(CardLoaded(cards));
     } catch (e) {
       emit(CardOperationFailure(e.toString()));
     }
@@ -37,7 +36,8 @@ class CardBloc extends Bloc<CardEvent, CardState> {
   void _onUpdateCard(UpdateCard event, Emitter<CardState> emit) async {
     try {
       await cardRepository.updateCard(event.card);
-      add(LoadCards(event.card.userId));
+      final cards = await cardRepository.fetchCards(event.card.userId);
+      emit(CardLoaded(cards));
     } catch (e) {
       emit(CardOperationFailure(e.toString()));
     }
@@ -46,9 +46,32 @@ class CardBloc extends Bloc<CardEvent, CardState> {
   void _onDeleteCard(DeleteCard event, Emitter<CardState> emit) async {
     try {
       await cardRepository.deleteCard(event.cardId);
-      // userId'ni yangilash kerak
-      final userId = ''; // userId-ni olish usuli kerak
-      add(LoadCards(userId));
+      final cards = await cardRepository.fetchCards(event.cardId);
+      emit(CardLoaded(cards));
+    } catch (e) {
+      emit(CardOperationFailure(e.toString()));
+    }
+  }
+
+  void _onTransferMoney(TransferMoney event, Emitter<CardState> emit) async {
+    try {
+      final senderCard =
+          await cardRepository.fetchCardByNumber(event.senderCardNumber);
+      final recipientCard =
+          await cardRepository.fetchCardByNumber(event.recipientCardNumber);
+
+      if (senderCard.balance < event.amount) {
+        emit(CardOperationFailure('Insufficient funds'));
+        return;
+      }
+
+      senderCard.balance -= event.amount;
+      recipientCard.balance += event.amount;
+
+      await cardRepository.updateCard(senderCard);
+      await cardRepository.updateCard(recipientCard);
+
+      emit(CardLoaded(await cardRepository.fetchCards(event.userId)));
     } catch (e) {
       emit(CardOperationFailure(e.toString()));
     }

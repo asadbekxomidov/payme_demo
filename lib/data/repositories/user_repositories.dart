@@ -38,7 +38,6 @@ class UserRepository {
     }
   }
 
-  // Pul o'tkazmasi
   Future<void> transferMoney(
       String fromCardId, String toCardId, double amount) async {
     try {

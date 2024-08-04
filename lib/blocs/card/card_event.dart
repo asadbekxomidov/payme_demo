@@ -1,10 +1,11 @@
-part of 'card_bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:vazifa_10/data/model/card_model.dart';
 
 abstract class CardEvent extends Equatable {
   const CardEvent();
 
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
 class LoadCards extends CardEvent {
@@ -13,7 +14,7 @@ class LoadCards extends CardEvent {
   const LoadCards(this.userId);
 
   @override
-  List<Object?> get props => [userId];
+  List<Object> get props => [userId];
 }
 
 class AddCard extends CardEvent {
@@ -22,7 +23,7 @@ class AddCard extends CardEvent {
   const AddCard(this.card);
 
   @override
-  List<Object?> get props => [card];
+  List<Object> get props => [card];
 }
 
 class UpdateCard extends CardEvent {
@@ -31,7 +32,7 @@ class UpdateCard extends CardEvent {
   const UpdateCard(this.card);
 
   @override
-  List<Object?> get props => [card];
+  List<Object> get props => [card];
 }
 
 class DeleteCard extends CardEvent {
@@ -40,5 +41,19 @@ class DeleteCard extends CardEvent {
   const DeleteCard(this.cardId);
 
   @override
-  List<Object?> get props => [cardId];
+  List<Object> get props => [cardId];
+}
+
+class TransferMoney extends CardEvent {
+  final String senderCardNumber;
+  final String recipientCardNumber;
+  final double amount;
+  final String userId;
+
+  TransferMoney({
+    required this.senderCardNumber,
+    required this.recipientCardNumber,
+    required this.amount,
+    required this.userId,
+  });
 }

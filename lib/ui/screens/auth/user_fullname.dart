@@ -86,8 +86,9 @@ class _UserAddWidgetsState extends State<UserAddWidgets> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.abc, size: 200, color: Colors.amber),
                 SizedBox(height: 100.h),
+                Icon(Icons.abc, size: 200, color: Colors.amber),
+                SizedBox(height: 50.h),
                 TextFormField(
                   controller: fnameController,
                   decoration: InputDecoration(
@@ -192,7 +193,13 @@ class _UserAddWidgetsState extends State<UserAddWidgets> {
                     child: Center(
                       child: isLoading
                           ? CircularProgressIndicator()
-                          : Text('Kirish'),
+                          : Text(
+                              'Kirish',
+                              style: TextStyle(
+                                fontSize: 20.h,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
                     ),
                   ),
                 ),

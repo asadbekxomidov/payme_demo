@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vazifa_10/data/model/user_model.dart';
 import 'package:vazifa_10/data/repositories/user_repositories.dart';
+import 'package:vazifa_10/ui/screens/auth/login_screen.dart';
 
 class CustomDrawerWidget extends StatefulWidget {
   const CustomDrawerWidget({super.key});
@@ -97,11 +98,11 @@ class _CustomDrawerWidgetState extends State<CustomDrawerWidget> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 if (user.imageUrl != null &&
-                                    user.imageUrl!.isNotEmpty)
+                                    user.imageUrl.isNotEmpty)
                                   CircleAvatar(
                                     radius: 40,
                                     backgroundImage:
-                                        NetworkImage(user.imageUrl!),
+                                        NetworkImage(user.imageUrl),
                                   ),
                                 SizedBox(height: 10.h),
                                 Text(
@@ -130,6 +131,8 @@ class _CustomDrawerWidgetState extends State<CustomDrawerWidget> {
           ListTile(
             onTap: () async {
               await auth.signOut();
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (ctx) => LoginScreen()));
             },
             leading: Icon(Icons.exit_to_app),
             title: Text('Chiqish'),
